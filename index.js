@@ -23,6 +23,7 @@ const { response } = require("express")
 const app = express()
 
 const contacts = require("./contacts")   
+// const meetings = require("./meetings")
 
 //Tell express we want to use the morgan library
 app.use(morgan("dev"))
@@ -30,6 +31,8 @@ app.use(morgan("dev"))
 app.use(cors())
 // Allows json to be processed in express
 app.use(express.json())
+
+// -------- GETS --------
 
 // the brackers are a callvack funtionm, they will runw hen the user makes a GET request
 app.get('/', (request, response) => {
@@ -40,11 +43,20 @@ app.get('/', (request, response) => {
 })
 
 app.get("/contacts", (request, response) => {
-  console.log("Someone made a GET request to /");
-  // sends a response from the server to the client
-  // response.send("Great work")
-  response.json({ contacts });
+    console.log("Someone made a GET Contacts request to /");
+    // sends a response from the server to the client
+    // response.send("Great work")
+    response.json({ contacts });
 });
+
+// app.get("/meetings", (request, response) => {
+//   console.log("Someone made a GET Meetings request to /");
+//   // sends a response from the server to the client
+//   // response.send("Great work")
+//   response.json({ meetings });
+// });
+
+// -------- POST --------
 
 // app.post('/', (request, response) => {
 //     console.log("Someone made a POST request to /");
@@ -53,14 +65,19 @@ app.get("/contacts", (request, response) => {
 //     response.json({ message: "Post was made" });
 // })
 
-// app.post("/contacts", (request, response) => {
-// contacts.length +1
-//   console.log("Body", request.body);
-//   response.json({ contact: {} });
-// });
+app.post("/contacts", (request, response) => {
+    const contact = request.body 
+    contact.id = contacts.length +1
+    console.log("Body", request.body);
+    contacts.push(contact)
+    // response.send("Contact updated!");
+    response.json({ contact });
+    // response.json(contacts)
+
+});
 
 //Start up our server
 const port = 3030
 app.listen(port, () => {
- console.log(`Server is running on http://localhost:${port}/`)
+    console.log(`Server is running on http://localhost:${port}/`)  
 })
