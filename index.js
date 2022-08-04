@@ -98,6 +98,32 @@ app.delete("/contacts/:id", (request, response) => {
     response.json({ contact: deleteContactRequest });
 })
 
+// ---------------- UPDATES ----------------
+// ---- UPDATE A SINGLE CONTACT ----
+// app.put("/contacts/:id", (request, response) => {
+//     const updatedContact = req.body
+//     const id = Number(request.params.id);
+//     updatedContact.id = id;
+//     const foundContact = contacts.find(contact => contact.id === id)
+//     const index = contacts.indexOf(foundContact);
+//     contacts.splice(index, 1, updatedContact)
+//     console.log("Updated Contact", updatedContact);
+//     response.json({ contact: updatedContact })
+// })
+
+app.put("/contacts/:id", (request, response) => {
+  const oldContact = contacts.find((contact) => contact.id === Number(request.params.id));
+  const index = contacts.indexOf(oldContact);
+
+  contacts.splice(index, 1, { ...request.body, id: oldContact.id });
+
+  const updatedContact = contacts.find((contact) => contact.id === Number(request.params.id));
+
+  response.status(201).json({
+    contact: { ...updatedContact },
+  });
+});
+
 //Start up our server
 const port = 3030
 app.listen(port, () => {
