@@ -85,6 +85,18 @@ app.post("/contacts", (request, response) => {
 //     response.json({ message: "Post was made" });
 // })
 
+// ---------------- POSTS ----------------
+// ---- DELETE SINGLE CONTACT ----
+app.delete("/contacts/:id", (request, response) => {
+    const id = Number(request.params.id);
+    const foundContact = contacts.find((contact) => contact.id === id);
+    const index = contacts.indexOf(foundContact);
+    console.log("Index of Contact", index);
+    // match the index and only remove one contact
+    const deleteContactRequest = contacts.splice(index, 1)
+    console.log("Delete Request", deleteContactRequest);
+    response.json({ contact: deleteContactRequest });
+})
 
 //Start up our server
 const port = 3030
